@@ -59,7 +59,7 @@ static struct dht11_reading _crcError() {
 }
 
 void DHT11_init(gpio_num_t gpio_num) {
-    /* Wait 1 seconds to make the device its initial unstable status */
+    /* Wait 1 seconds to make the device pass its initial unstable status */
     vTaskDelay(1000 / portTICK_PERIOD_MS);
     dht_gpio = gpio_num;
 }
