@@ -27,6 +27,27 @@ static int _checkCRC(uint8_t data[]) {
         return DHT11_CRC_ERROR;
 }
 
+static void _sendStartSignal() {
+    gpio_set_direction(dht_gpio, GPIO_MODE_OUTPUT);
+    gpio_set_level(dht_gpio, 0);
+    vTaskDelay(20 / portTICK_PERIOD_MS);
+    gpio_set_level(dht_gpio, 1);
+    ets_delay_us(40);
+    gpio_set_direction(dht_gpio, GPIO_MODE_INPUT);
+}
+
+static int _checkResponse() {
+    /* Wait for next step ~80us*/
+    if(_waitOrTimeout(80, 0) == DHT11_TIMEOUT_ERROR)
+        return DHT11_TIMEOUT_ERROR;
+
+    /* Wait for next step ~80us*/
+    if(_waitOrTimeout(80, 1) == DHT11_TIMEOUT_ERROR) 
+        return DHT11_TIMEOUT_ERROR;
+
+    return DHT11_OK;
+}
+
 static struct dht11_reading _timeoutError() {
     struct dht11_reading timeoutError = {DHT11_TIMEOUT_ERROR, -1, -1};
     return timeoutError;
@@ -52,19 +73,10 @@ struct dht11_reading DHT11_sense() {
     last_read_time = esp_timer_get_time();
 
     uint8_t data[5] = {0,0,0,0,0};
-    gpio_set_direction(dht_gpio, GPIO_MODE_OUTPUT);
-    gpio_set_level(dht_gpio, 0);
-    vTaskDelay(20 / portTICK_PERIOD_MS);
-    gpio_set_level(dht_gpio, 1);
-    ets_delay_us(40);
-    gpio_set_direction(dht_gpio, GPIO_MODE_INPUT);
 
-    /* Wait for next step ~80us*/
-    if(_waitOrTimeout(80, 0) == DHT11_TIMEOUT_ERROR)
-        return last_read = _timeoutError();
+    _sendStartSignal();
 
-    /* Wait for next step ~80us*/
-    if(_waitOrTimeout(80, 1) == DHT11_TIMEOUT_ERROR) 
+    if(_checkResponse() == DHT11_TIMEOUT_ERROR)
         return last_read = _timeoutError();
     
     /* Read response */
