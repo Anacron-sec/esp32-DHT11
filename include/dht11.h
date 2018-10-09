@@ -41,6 +41,6 @@ struct dht11_reading {
 
 void DHT11_init(gpio_num_t);
 
-struct dht11_reading DHT11_sense();
+struct dht11_reading DHT11_read();
 
 #endif
