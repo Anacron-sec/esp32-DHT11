@@ -54,7 +54,7 @@ static int _checkCRC(uint8_t data[]) {
 static void _sendStartSignal() {
     gpio_set_direction(dht_gpio, GPIO_MODE_OUTPUT);
     gpio_set_level(dht_gpio, 0);
-    vTaskDelay(20 / portTICK_PERIOD_MS);
+    ets_delay_us(20 * 1000);
     gpio_set_level(dht_gpio, 1);
     ets_delay_us(40);
     gpio_set_direction(dht_gpio, GPIO_MODE_INPUT);
