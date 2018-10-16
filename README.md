@@ -1,7 +1,15 @@
-# esp32-DHT11
+# ESP32-DHT11
 Esp-idf driver for DHT11 temperature and humidity sensor
 
 ## Install
-Use Platformio to install this <br/>
+Use Platformio to install this<br/>
 or <br/>
 Clone this repo inside [esp]/esp-idf/components folder
+
+## How to use
+Import dht11.h inside your program and then call DHT11_read() whenever you need to read from the DHT11 sensor.<br/>
+DHT11_read() returns a struct with temperature and humidity and status code of the operation for error checking.<br/>
+
+Check the examples folder for more information.
+
+<b>WARNING</b>: DHT11_read() is a blocking function.
