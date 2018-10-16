@@ -11,7 +11,7 @@
         "type": "git",
         "url": "https://github.com/an4cr0n/esp32-DHT11.git"
     },
-    "version": "1.0.0",
+    "version": "1.0.1",
     "frameworks": "espidf",
     "platforms": "espressif32"
 }
