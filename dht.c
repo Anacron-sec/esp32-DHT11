@@ -23,6 +23,7 @@
 */
 
 #include "esp_timer.h"
+#include <esp_log.h>
 #include "driver/gpio.h"
 #include "rom/ets_sys.h"
 #include "freertos/FreeRTOS.h"
@@ -34,6 +35,8 @@ typedef enum{
 	MODE_DHT11,
 	MODE_DHT22
 }dht_mode_t;
+
+#define TAG "dht-drv"
 
 static gpio_num_t dht_gpio;
 static dht_mode_t dht_mode;
@@ -51,9 +54,16 @@ static int _waitOrTimeout(uint16_t microSeconds, int level) {
 }
 
 static int _checkCRC(uint8_t data[]) {
-    if(data[4] == (data[0] + data[1] + data[2] + data[3]))
+    if(data[4] == ((data[0] + data[1] + data[2] + data[3])&0xFF))
         return DHT_OK;
     else
+		ESP_LOGD(TAG,"Crc error: %02x != %02x+%02x+%02x+%02x"
+				,data[4]
+				,data[0]
+				,data[1]
+				,data[2]
+				,data[3]
+				);
         return DHT_CRC_ERROR;
 }
 
