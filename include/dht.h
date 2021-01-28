@@ -22,25 +22,27 @@
  * SOFTWARE.
 */
 
-#ifndef DHT11_H_
-#define DHT11_H_
+#ifndef DHT_H_
+#define DHT_H_
 
 #include "driver/gpio.h"
 
-enum dht11_status {
-    DHT11_CRC_ERROR = -2,
-    DHT11_TIMEOUT_ERROR,
-    DHT11_OK
+enum dht_status {
+    DHT_CRC_ERROR = -2,
+    DHT_TIMEOUT_ERROR,
+    DHT_OK
 };
 
-struct dht11_reading {
+struct dht_reading {
     int status;
-    int temperature;
-    int humidity;
+    float temperature;
+	float humidity;
 };
 
 void DHT11_init(gpio_num_t);
 
-struct dht11_reading DHT11_read();
+void DHT22_init(gpio_num_t);
+
+struct dht_reading DHT_read();
 
 #endif
