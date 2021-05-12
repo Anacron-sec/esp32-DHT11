@@ -4,6 +4,8 @@ Esp-idf driver for DHT11 temperature and humidity sensor
 ## Install
 Use Platformio to install this [link](https://platformio.org/lib/show/5817/ESP32-DHT11)<br/>
 or <br/>
+Clone this repo inside your-platformio-project/components folder
+or <br/>
 Clone this repo inside [esp]/esp-idf/components folder
 
 ## How to use
