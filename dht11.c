@@ -24,7 +24,7 @@
 
 #include "esp_timer.h"
 #include "driver/gpio.h"
-#include "rom/ets_sys.h"
+#include "esp32/rom/ets_sys.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 
@@ -45,7 +45,7 @@ static int _waitOrTimeout(uint16_t microSeconds, int level) {
 }
 
 static int _checkCRC(uint8_t data[]) {
-    if(data[4] == (data[0] + data[1] + data[2] + data[3]))
+    if(data[4] == ((data[0] + data[1] + data[2] + data[3])&0xFF))
         return DHT11_OK;
     else
         return DHT11_CRC_ERROR;
